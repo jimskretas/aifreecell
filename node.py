@@ -32,9 +32,7 @@ class Node:
         return [node.action for node in self.path()[1:]]
 
     def path(self) -> List['Node']:
-        """
-        Return a list of nodes forming the path from the root to this node.
-        """
+        """Return a list of nodes forming the path from the root to this node."""
         node, path_back = self, []
         while node:
             path_back.append(node)

@@ -10,7 +10,6 @@ def depth_first_graph_search(problem: Problem) -> Optional[Node]:
 
     explored = []
     while frontier:
-        print(len(frontier))
         node = frontier.pop()
         if problem.isSolved(node.board):
             return node
@@ -28,7 +27,6 @@ def breadth_first_graph_search(problem: Problem) -> Optional[Node]:
     frontier = deque([node])
     explored = []
     while frontier:
-        print(len(frontier))
         node = frontier.popleft()
         explored.append(node.board)
         for child in node.expand(problem):

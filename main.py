@@ -27,7 +27,7 @@ def writeToFile(outputfile: str, solution: List[List[str]]):
 
 
 def syntax_msg():
-    print("puzzle <method> <input-file> <output-file>")
+    print("python main.py <method> <input-file> <output-file>")
     print("where: ")
     print("<method> = breadth|depth|best|astar")
     print("<input-file> is a file containing the freecell description.")
@@ -55,7 +55,8 @@ def main():
         return -1
 
     stacks = readInput(sys.argv[2])
-    problem = Problem(Board(stacks))
+    board = Board(stacks)
+    problem = Problem(board)
 
     t0 = time.perf_counter()
     if method == 1:
@@ -63,9 +64,12 @@ def main():
     elif method == 2:
         result = depth_first_graph_search(problem)
     t1 = time.perf_counter()
-
-    writeToFile(sys.argv[3], result.solution())
     print(t1 - t0)
+
+    if result:
+        writeToFile(sys.argv[3], result.solution())
+    else:
+        print("Could not solve problem")
 
 
 if __name__ == "__main__":

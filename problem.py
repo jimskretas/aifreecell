@@ -5,7 +5,7 @@ from typing import List
 
 
 class Problem:
-    def __init__(self, initial):
+    def __init__(self, initial: Board):
         self.initial = initial
 
     def __canCardGoThere(self, card1: str, card2: str, foundation: bool = False) -> bool:
@@ -35,12 +35,13 @@ class Problem:
         return True
 
     def actions(self, board: Board) -> List[str]:
-        """Return the actions that can be executed in the given
-        state. The possible moves/actions are:
-        • freecell card         card moves to an empty freecell.
-        • stack card1 card2 	card1 goes on top of card2 in a stack
-        • newstack card 	    card moves to an empty stack
-        • foundation card 	    card moves to a foundation
+        """Return the actions that can be executed in the given state.
+
+        The possible moves/actions are:
+        • freecell card: card moves to an empty freecell.
+        • stack card1 card2: card1 goes on top of card2 in a stack
+        • newstack card: card moves to an empty stack
+        • foundation card: card moves to a foundation
         """
         possible_actions = []
         # contains multiple lists with structure: [ <move>, <card1>, <card2>]
@@ -58,7 +59,7 @@ class Problem:
                 for stack in board.stacks:
                     if stack:
                         card2 = stack[-1]
-                        if(self.__canCardGoThere(card, card2, True)):
+                        if(self.__canCardGoThere(card, card2)):
                             possible_actions.append(["stack", card, card2])
         for stack in board.stacks:
             if stack:
@@ -94,10 +95,11 @@ class Problem:
         return possible_actions
 
     def result(self, state: Board, action: List[str]) -> Board:
-        """Return the state that results from executing the given
-        action. The action must be one of self.actions()."""
+        """Return the state that results from executing the given action."""
         board: Board = copy.deepcopy(state)
         move, card1, *card2 = action
+        if card2:
+            card2 = card2[0]
         foundCard = False
 
         # First find and remove the card from its original spot
@@ -127,6 +129,8 @@ class Problem:
             for i, stack in enumerate(board.stacks):
                 if stack and stack[-1] == card2:
                     board.stacks[i].append(card1)
+        else:
+            print("wrong move")
 
         return board
 

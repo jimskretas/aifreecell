@@ -8,11 +8,7 @@ class Board:
         self.stacks = stacks
 
     def __eq__(self, other: 'Board') -> bool:
-        if self.freecells != other.freecells:
-            return False
-        if self.foundations != other.foundations:
-            return False
-        if self.stacks != other.stacks:
+        if self.freecells != other.freecells or self.stacks != other.stacks:
             return False
         return True
 
