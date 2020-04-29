@@ -64,7 +64,7 @@ def main():
     elif method == 2:
         result = depth_first_graph_search(problem)
     t1 = time.perf_counter()
-    print(t1 - t0)
+    print("Time: ", t1 - t0)
 
     if result:
         writeToFile(sys.argv[3], result.solution())

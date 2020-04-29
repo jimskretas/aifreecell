@@ -14,7 +14,7 @@ class Node:
 
     def __eq__(self, other: 'Node') -> bool:
         """ Two nodes are equal, if their boards are equal. """
-        return isinstance(other, self.__class__) and self.board == other.board
+        return isinstance(other, Node) and self.board == other.board
 
     def expand(self, problem: Problem) -> List['Node']:
         """List the nodes reachable in one step from this node."""

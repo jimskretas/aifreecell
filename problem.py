@@ -107,6 +107,7 @@ class Problem:
             if card == card1:
                 board.freecells[i] = 0
                 foundCard = True
+                break
 
         if not foundCard:
             for i, stack in enumerate(board.stacks):
@@ -125,10 +126,12 @@ class Problem:
             for i, stack in enumerate(board.foundations):
                 if stack[-1][0] == cardLetter:
                     board.foundations[i].append(card1)
+                    break
         elif move == 'stack':
             for i, stack in enumerate(board.stacks):
                 if stack and stack[-1] == card2:
                     board.stacks[i].append(card1)
+                    break
         else:
             print("wrong move")
 

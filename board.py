@@ -12,6 +12,14 @@ class Board:
             return False
         return True
 
+    def __hash__(self):
+        # We use the hash value of the state
+        # stored in the node instead of the node
+        # object itself to quickly search a node
+        # with the same state in a Hash Table
+        state = tuple([card for stack in self.stacks for card in stack])
+        return hash(state)
+
     def printBoard(self):
         print("Freecells")
         print(self.freecells)

@@ -8,12 +8,13 @@ from typing import Optional
 def depth_first_graph_search(problem: Problem) -> Optional[Node]:
     frontier = [(Node(problem.initial))]  # Stack
 
-    explored = []
+    explored = set()
     while frontier:
+        # print(len(frontier))
         node = frontier.pop()
         if problem.isSolved(node.board):
             return node
-        explored.append(node.board)
+        explored.add(node.board)
         frontier.extend(child for child in node.expand(problem)
                         if child.board not in explored
                         and child not in frontier)
@@ -25,10 +26,11 @@ def breadth_first_graph_search(problem: Problem) -> Optional[Node]:
     if problem.isSolved(node.board):
         return node
     frontier = deque([node])
-    explored = []
+    explored = set()
     while frontier:
         node = frontier.popleft()
-        explored.append(node.board)
+        node.board.printBoard()
+        explored.add(node.board)
         for child in node.expand(problem):
             if child.board not in explored and child not in frontier:
                 if problem.isSolved(child.board):
