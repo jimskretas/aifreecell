@@ -4,10 +4,11 @@ from typing import List
 
 
 class Node:
-    def __init__(self, board: Board, parent: 'Node' = None, action: List[str] = None):
+    def __init__(self, board: Board, parent: 'Node' = None, action: List[str] = None, path_cost: int = 0):
         self.board = board
         self.parent = parent
         self.action = action
+        self.path_cost = path_cost
         self.depth = 0
         if parent:
             self.depth = parent.depth + 1
@@ -15,6 +16,9 @@ class Node:
     def __eq__(self, other: 'Node') -> bool:
         """ Two nodes are equal, if their boards are equal. """
         return isinstance(other, Node) and self.board == other.board
+
+    def __lt__(self, other: 'Node'):
+        return self.board < other.board
 
     def expand(self, problem: Problem) -> List['Node']:
         """List the nodes reachable in one step from this node."""
@@ -24,7 +28,8 @@ class Node:
     def child_node(self, problem: Problem, action: List[str]) -> 'Node':
         """ Returns the child node of a node, given an action"""
         next_board = problem.result(self.board, action)
-        next_node = Node(next_board, self, action)
+        next_node = Node(next_board, self, action, problem.path_cost(
+            self.path_cost, self.board, action, next_board))
         return next_node
 
     def solution(self) -> List[List[str]]:

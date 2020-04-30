@@ -1,9 +1,16 @@
 import sys
 from board import Board
 from problem import Problem
-from search import depth_first_graph_search, breadth_first_graph_search
+from search import (
+    depth_first_graph_search,
+    breadth_first_graph_search,
+    best_first_graph_search,
+    astar_search
+)
 from typing import List
 import time
+from utils import HSDH
+from node import Node
 
 
 def readInput(inputfile: str) -> List[List[str]]:
@@ -46,9 +53,6 @@ def main():
     methods = {'breadth': 1, 'depth': 2, 'best': 3, 'astar': 4}
     if sys.argv[1] in methods:
         method = methods[sys.argv[1]]
-        if(method == 3 or method == 4):
-            print("Not implemented")
-            return -1
     else:
         print("Wrong method. Use correct syntax:")
         syntax_msg()
@@ -63,6 +67,10 @@ def main():
         result = breadth_first_graph_search(problem)
     elif method == 2:
         result = depth_first_graph_search(problem)
+    elif method == 3:
+        result = best_first_graph_search(problem, lambda n: HSDH(n))
+    elif method == 4:
+        result = astar_search(problem, HSDH)
     t1 = time.perf_counter()
     print("Time: ", t1 - t0)
 
