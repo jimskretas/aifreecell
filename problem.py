@@ -1,4 +1,3 @@
-from itertools import repeat
 import copy
 from board import Board
 from typing import List
@@ -92,11 +91,60 @@ class Problem:
                     if(self.__canCardGoThere(card, foundation[-1], True)):
                         possible_actions.append(["foundation", card])
 
+        # if 0 in board.freecells:
+        #     for stack in board.stacks:
+        #         if stack and stack[-1][1:] != "1":
+        #             possible_actions.append(["freecell", stack[-1]])
+
+        # # check for cards that can move to another stack
+        # for card in board.freecells:
+        #     if card != 0 and card[1:] != "1":
+        #         for stack in board.stacks:
+        #             if stack:
+        #                 card2 = stack[-1]
+        #                 if(self.__canCardGoThere(card, card2)):
+        #                     possible_actions.append(["stack", card, card2])
+        # for stack in board.stacks:
+        #     if stack and stack[-1][1:] != "1":
+        #         card = stack[-1]
+        #         for stack2 in board.stacks:
+        #             if stack2:
+        #                 card2 = stack2[-1]
+        #                 if(self.__canCardGoThere(card, card2)):
+        #                     possible_actions.append(["stack", card, card2])
+
+        # # check for cards that can go to an empty stack/new stack
+        # if [] in board.stacks:
+        #     for card in board.freecells:
+        #         if card and card[1:] != "1":
+        #             possible_actions.append(["newstack", card])
+        #     for stack in board.stacks:
+        #         if stack and stack[-1][1:] != "1":
+        #             possible_actions.append(["newstack", stack[-1]])
+
+        # # check for cards that can go to a foundation
+        # for card in board.freecells:
+        #     if card and card[1:] == "1":
+        #         possible_actions.append(["foundation", card])
+        #     elif card != 0:
+        #         for foundation in board.foundations:
+        #             if(self.__canCardGoThere(card, foundation[-1], True)):
+        #                 possible_actions.append(["foundation", card])
+        # for stack in board.stacks:
+        #     if stack:
+        #         card = stack[-1]
+        #         if card[1:] == "1":
+        #             possible_actions.append(["foundation", card])
+        #         else:
+        #             for foundation in board.foundations:
+        #                 if(self.__canCardGoThere(card, foundation[-1], True)):
+        #                     possible_actions.append(["foundation", card])
+
         return possible_actions
 
     def result(self, state: Board, action: List[str]) -> Board:
         """Return the state that results from executing the given action."""
-        board: Board = copy.deepcopy(state)
+        board = copy.copy(state)
         move, card1, *card2 = action
         if card2:
             card2 = card2[0]
@@ -113,6 +161,7 @@ class Problem:
             for i, stack in enumerate(board.stacks):
                 if stack and card1 == stack[-1]:
                     board.stacks[i].pop()
+                    break
 
         # Then place the card where it should go
         if move == 'freecell':
@@ -151,7 +200,7 @@ class Problem:
                 return False
         return True
 
-    def path_cost(self, c, state1, action, state2):
+    def path_cost(self, c):
         """Return the cost of a solution path that arrives at state2 from
         state1 via action, assuming cost c to get up to state1. If the problem
         is such that the path doesn't matter, this function will only look at

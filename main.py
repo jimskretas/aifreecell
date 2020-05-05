@@ -9,8 +9,7 @@ from search import (
 )
 from typing import List
 import time
-from utils import HSDH
-from node import Node
+import cProfile as profile
 
 
 def readInput(inputfile: str) -> List[List[str]]:
@@ -58,6 +57,8 @@ def main():
         syntax_msg()
         return -1
 
+    # method = 3
+    # stacks = readInput("inputfiles/inputN6-2.txt")
     stacks = readInput(sys.argv[2])
     board = Board(stacks)
     problem = Problem(board)
@@ -67,15 +68,20 @@ def main():
         result = breadth_first_graph_search(problem)
     elif method == 2:
         result = depth_first_graph_search(problem)
+        # result = profile.runctx(
+        #     "depth_first_graph_search(problem)", globals(), locals())
     elif method == 3:
-        result = best_first_graph_search(problem, lambda n: HSDH(n))
+        result = best_first_graph_search(problem, lambda n: n.h_cost)
+        # result = profile.runctx(
+        #     "best_first_graph_search(problem, lambda n: n.h_cost)", globals(), locals())
     elif method == 4:
-        result = astar_search(problem, HSDH)
+        result = astar_search(problem)
     t1 = time.perf_counter()
     print("Time: ", t1 - t0)
 
     if result:
         writeToFile(sys.argv[3], result.solution())
+        # writeToFile("output.txt", result.solution())
     else:
         print("Could not solve problem")
 
